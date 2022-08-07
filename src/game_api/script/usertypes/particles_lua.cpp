@@ -115,7 +115,9 @@ void register_usertypes(sol::state& lua)
         "offset_y",
         &ParticleEmitterInfo::offset_y,
         "emitted_particles",
-        &ParticleEmitterInfo::emitted_particles);
+        &ParticleEmitterInfo::emitted_particles,
+        "emitted_particle_at",
+        &ParticleEmitterInfo::emitted_particle_at);
 
     lua.new_usertype<Particle>(
         "Particle",

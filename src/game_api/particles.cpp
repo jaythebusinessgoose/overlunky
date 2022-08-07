@@ -110,6 +110,30 @@ std::vector<Particle> ParticleEmitterInfo::emitted_particles()
     return particles;
 }
 
+Particle ParticleEmitterInfo::emitted_particle_at(uint32_t particle_index)
+{
+    EmittedParticlesInfo particleInfos = emitted_particle_infos_type1;
+    // emitted_particle_infos_type1->x_positions[particle_index]
+    ParticleColor particleColor = particleInfos.colors[particle_index];
+
+    Color color = Color(particleColor.red / 255.0f, particleColor.green / 255.0f, particleColor.blue / 255.0f, particleColor.alpha / 255.0f);
+    return {
+        this,
+        particle_index,
+        particleInfos.x_positions[particle_index],
+        particleInfos.y_positions[particle_index],
+        particleInfos.unknown_x_positions[particle_index],
+        particleInfos.unknown_y_positions[particle_index],
+        color,
+        particleInfos.widths[particle_index],
+        particleInfos.heights[particle_index],
+        particleInfos.x_velocities[particle_index],
+        particleInfos.y_velocities[particle_index],
+        particleInfos.lifetimes[particle_index],
+        particleInfos.max_lifetimes[particle_index],
+    };
+}
+
 void Particle::move(float new_x, float new_y)
 {
     x = new_x;

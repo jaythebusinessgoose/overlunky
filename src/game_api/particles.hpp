@@ -164,6 +164,7 @@ class ParticleEmitterInfo {
     uint32_t unknown60;
 
     std::vector<Particle> emitted_particles();
+    Particle emitted_particle_at(uint32_t index);
 };
 
 

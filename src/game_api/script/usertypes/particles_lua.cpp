@@ -87,6 +87,8 @@ void register_usertypes(sol::state& lua)
         &ParticleDB::green,
         "blue",
         &ParticleDB::blue,
+        "alpha",
+        &ParticleDB::alpha,
         "permanent",
         &ParticleDB::permanent,
         "invisible",
@@ -111,7 +113,34 @@ void register_usertypes(sol::state& lua)
         "offset_x",
         &ParticleEmitterInfo::offset_x,
         "offset_y",
-        &ParticleEmitterInfo::offset_y);
+        &ParticleEmitterInfo::offset_y,
+        "emitted_particles",
+        &ParticleEmitterInfo::emitted_particles);
+
+    lua.new_usertype<Particle>(
+        "Particle",
+        "x",
+        &Particle::x,
+        "y",
+        &Particle::y,
+        "color",
+        &Particle::color,
+        "width",
+        &Particle::width,
+        "height",
+        &Particle::height,
+        "lifetime",
+        &Particle::lifetime,
+        "max_lifetime",
+        &Particle::max_lifetime,
+        "move",
+        &Particle::move,
+        "set_color",
+        &Particle::set_color,
+        "set_width",
+        &Particle::set_width,
+        "set_height",
+        &Particle::set_height);
 
     lua.create_named_table("PARTICLEEMITTER"
                            //, "TITLE_TORCHFLAME_SMOKE", 1

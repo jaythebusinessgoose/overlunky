@@ -11,7 +11,7 @@
 #include "color.hpp"      // for Color
 #include "render_api.hpp" // for TextureRenderingInfo, TextRenderingInfo (p...
 
-struct ParticleEmitterInfo;
+class ParticleEmitterInfo;
 struct SoundPosition;
 class Entity;
 

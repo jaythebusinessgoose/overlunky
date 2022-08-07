@@ -13,7 +13,7 @@ class Entity;
 class PowerupCapable;
 struct Illumination;
 struct Inventory;
-struct ParticleEmitterInfo;
+class ParticleEmitterInfo;
 struct PlayerInputs;
 struct SoundPosition;
 

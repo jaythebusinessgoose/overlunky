@@ -130,9 +130,9 @@ const char16_t** get_strings_table()
 
 STRINGID hash_to_stringid(uint32_t hash)
 {
-    const auto& string_hashes{get_string_hashes()};
-    auto it = string_hashes.find(hash);
-    if (it != string_hashes.end())
+    const auto& string_hashes2{get_string_hashes()};
+    auto it = string_hashes2.find(hash);
+    if (it != string_hashes2.end())
     {
         return it->second;
     }

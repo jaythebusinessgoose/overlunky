@@ -12,7 +12,7 @@
 #include "color.hpp"   // for Color
 
 class Player;
-struct ParticleEmitterInfo;
+class ParticleEmitterInfo;
 struct Illumination;
 class Entity;
 struct AABB;

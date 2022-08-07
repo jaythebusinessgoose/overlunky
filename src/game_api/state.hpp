@@ -27,7 +27,7 @@ class ScreenScores;
 class ScreenTeamSelect;
 class ScreenTransition;
 class ScreenWin;
-struct ParticleEmitterInfo;
+class ParticleEmitterInfo;
 
 const float ZF = 0.737f;
 

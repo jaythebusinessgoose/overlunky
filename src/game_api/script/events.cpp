@@ -397,3 +397,73 @@ bool pre_set_feat(FEAT feat)
         });
     return block;
 }
+
+std::optional<bool> pre_is_shop_zone(LevelGenSystem *level_gen, uint8_t layer, float x, float y)
+{
+    std::optional<bool> is_zone;
+    bool block{false};
+    LuaBackend::for_each_backend(
+        [&](LuaBackend::LockedBackend backend)
+        {
+            std::optional<bool> ret = backend->pre_is_shop_zone(level_gen, layer, x, y);
+            if (ret.has_value())
+            {
+                block = true;
+                is_zone = ret;
+            }
+            return !block;
+        });
+    return is_zone;
+}
+
+std::optional<bool> pre_is_active_shop_room(LevelGenSystem *level_gen, uint8_t layer, float x, float y)
+{
+    std::optional<bool> is_zone;
+    bool block{false};
+    LuaBackend::for_each_backend(
+        [&](LuaBackend::LockedBackend backend)
+        {
+            std::optional<bool> ret = backend->pre_is_active_shop_room(level_gen, layer, x, y);
+            if (ret.has_value())
+            {
+                block = true;
+                is_zone = ret;
+            }
+            return !block;
+        });
+    return is_zone;
+}
+
+std::optional<uint32_t> pre_get_roomowner_type(uint8_t layer, float x, float y) {
+    std::optional<uint32_t> roomowner_type;
+    bool block{false};
+    LuaBackend::for_each_backend(
+        [&](LuaBackend::LockedBackend backend)
+        {
+            std::optional<uint32_t> ret = backend->pre_get_roomowner_type(layer, x, y);
+            if (ret.has_value())
+            {
+                block = true;
+                roomowner_type = ret;
+            }
+            return !block;
+        });
+    return roomowner_type;
+}
+
+std::optional<bool> pre_is_roomowner_alive(StateMemory *state, uint8_t layer, float x, float y) {
+    std::optional<bool> is_alive;
+    bool block{false};
+    LuaBackend::for_each_backend(
+        [&](LuaBackend::LockedBackend backend)
+        {
+            std::optional<bool> ret = backend->pre_is_roomowner_alive(state, layer, x, y);
+            if (ret.has_value())
+            {
+                block = true;
+                is_alive = ret;
+            }
+            return !block;
+        });
+    return is_alive;
+}

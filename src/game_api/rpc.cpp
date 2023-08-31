@@ -1056,6 +1056,26 @@ bool is_inside_shop_zone(float x, float y, LAYER layer)
     return false;
 }
 
+// bool is_inside_active_shop_room(float x, float y, LAYER layer)
+// {
+//     static size_t offset = 0;
+//     static void* rcx = nullptr;
+//     if (offset == 0)
+//     {
+//         offset = get_address("coord_inside_active_shop_room");
+//         size_t* tmp = (size_t*)get_address("coord_inside_active_shop_room");
+//         auto heap_ptr = OnHeapPointer<void*>(*tmp);
+//         rcx = heap_ptr.decode();
+//     }
+//     if (offset != 0)
+//     {
+//         typedef bool coord_inside_active_shop_room_func(void*, uint32_t layer, float x, float y);
+//         static coord_inside_active_shop_room_func* ciszf = (coord_inside_active_shop_room_func*)(offset);
+//         return ciszf(rcx, enum_to_layer(layer), x, y);
+//     }
+//     return false;
+// }
+
 ParticleEmitterInfo* generate_world_particles(uint32_t particle_emitter_id, uint32_t uid)
 {
     static size_t offset = get_address("generate_world_particles");

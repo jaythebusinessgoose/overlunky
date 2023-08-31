@@ -360,7 +360,10 @@ float State::get_zoom_level()
     return memory_read<float>(offset) + get_layer_zoom_offset(state->camera_layer);
 }
 
-void State::zoom(float level)
+void State::zoom(float level) {
+    State::zoom(level, 0);
+}
+void State::zoom(float level, float level_shop)
 {
     auto roomx = ptr()->w;
     if (level == 0.0)
@@ -395,8 +398,12 @@ void State::zoom(float level)
             level = 13.5f;
         }
     }
+    if (level_shop == 0) {
+        level_shop = level;
+    }
 
     const auto level_str = to_le_bytes(level);
+    const auto level_shop_str = to_le_bytes(level_shop);
 
     static const auto zoom_level = get_address("default_zoom_level");
     static const auto zoom_shop = get_address("default_zoom_level_shop");
@@ -405,7 +412,7 @@ void State::zoom(float level)
 
     // overwrite the defaults
     write_mem_prot(zoom_level, level_str, true);
-    write_mem_prot(zoom_shop, level_str, true);
+    write_mem_prot(zoom_shop, level_shop_str, true);
     write_mem_prot(zoom_camp, level_str, true);
     write_mem_prot(zoom_telescope, level_str, true);
 

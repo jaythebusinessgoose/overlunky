@@ -940,8 +940,15 @@ end
     lua["force_dark_level"] = [](bool g)
     { State::get().darkmode(g); };
     /// Set the zoom level used in levels and shops. 13.5 is the default.
-    lua["zoom"] = [](float level)
-    { State::get().zoom(level); };
+    lua["zoom"] = sol::overload(
+        [](float level)
+        {
+            State::get().zoom(level);
+        },
+        [](float level, float shop_level)
+        {
+            State::get().zoom(level, shop_level);
+        });
     /// Pause/unpause the game.
     /// This is just short for `state.pause == 32`, but that produces an audio bug
     /// I suggest `state.pause == 2`, but that won't run any callback, `state.pause == 16` will do the same but [set_global_interval](#set_global_interval) will still work
@@ -2162,7 +2169,15 @@ end
         "POST_UPDATE",
         ON::POST_UPDATE,
         "USER_DATA",
-        ON::USER_DATA);
+        ON::USER_DATA,
+        "PRE_IS_SHOP_ZONE",
+        ON::PRE_IS_SHOP_ZONE,
+        "PRE_IS_ACTIVE_SHOP_ROOM",
+        ON::PRE_IS_ACTIVE_SHOP_ROOM,
+        "PRE_GET_ROOMOWNER_TYPE",
+        ON::PRE_GET_ROOMOWNER_TYPE,
+        "PRE_IS_ROOMOWNER_ALIVE",
+        ON::PRE_IS_ROOMOWNER_ALIVE);
     /* ON
     // LOGO
     // Runs when entering the the mossmouth logo screen.
@@ -2374,6 +2389,9 @@ end
     // USER_DATA
     // Params: Entity ent
     // Runs on all changes to Entity.user_data, including after loading saved user_data in the next level and transition. Also runs the first time user_data is set back to nil, but nil won't be saved to bother you on future levels.
+    // PRE_IS_SHOP_ZONE
+    // Runs before checking if a position is in a shop zone.
+    // Return: Bool to override the game implementation with your own.
     */
 
     lua.create_named_table(

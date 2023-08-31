@@ -8,6 +8,7 @@
 #include "search.hpp" // for get_address
 #include "strings.hpp"
 #include "vtable_hook.hpp" // for get_hook_function, register_hook_function
+#include "level_api.hpp"
 
 class ISteamUserStats;
 
@@ -95,6 +96,61 @@ void reset_all_steam_achievements()
     }
 }
 
+using IsShopZoneFun = bool(LevelGenSystem *, uint8_t, float, float);
+IsShopZoneFun* g_is_shop_zone_trampoline{nullptr};
+std::function<bool(LevelGenSystem*, uint8_t, float, float)> g_is_shop_zone{nullptr};
+
+bool is_shop_zone(LevelGenSystem *level_gen, uint8_t layer, float x, float y)
+{
+    auto pre = pre_is_shop_zone(level_gen, layer, x, y);
+    if (pre.has_value())
+        return pre.value();
+    else if (g_is_shop_zone_trampoline)
+        return g_is_shop_zone_trampoline(level_gen, layer, x, y);
+    return false;
+}
+
+using IsActiveShopRoomFun = bool(LevelGenSystem *, uint8_t, float, float);
+IsActiveShopRoomFun* g_is_active_shop_room_trampoline{nullptr};
+std::function<bool(LevelGenSystem*, uint8_t, float, float)> g_is_active_shop_room{nullptr};
+bool is_active_shop_room(LevelGenSystem *level_gen, uint8_t layer, float x, float y)
+{
+    auto pre = pre_is_active_shop_room(level_gen, layer, x, y);
+    if (pre.has_value())
+        return pre.value();
+    else if (g_is_active_shop_room_trampoline)
+        return g_is_active_shop_room_trampoline(level_gen, layer, x, y);
+    return false;
+}
+
+using GetRoomownerTypeFun = uint32_t(uint8_t, float, float);
+GetRoomownerTypeFun* g_get_roomowner_type_trampoline{nullptr};
+std::function<uint32_t(uint8_t, float, float)> g_get_roomowner_type{nullptr};
+
+uint32_t get_roomowner_type(uint8_t layer, float x, float y)
+{
+    auto pre = pre_get_roomowner_type(layer, x, y);
+    if (pre.has_value())
+        return pre.value();
+    else if (g_get_roomowner_type_trampoline)
+        return g_get_roomowner_type_trampoline(layer, x, y);
+    return 0x128; // MONS_SHOPKEEPER is default.
+}
+
+using IsRoomownerAliveFun = bool(StateMemory *, uint8_t, float, float);
+IsRoomownerAliveFun* g_is_roomowner_alive_trampoline{nullptr};
+std::function<bool(StateMemory *, uint8_t, float, float)> g_is_roomowner_alive{nullptr};
+
+bool is_roomowner_alive(StateMemory *state, uint8_t layer, float x, float y)
+{
+    auto pre = pre_is_roomowner_alive(state, layer, x, y);
+    if (pre.has_value())
+        return pre.value();
+    else if (g_is_roomowner_alive_trampoline)
+        return g_is_roomowner_alive_trampoline(state, layer, x, y);
+    return false;
+}
+
 using GetFeatFun = bool(FEAT);
 GetFeatFun* g_get_feat_trampoline{nullptr};
 std::function<bool(FEAT)> g_get_feat{nullptr};
@@ -173,12 +229,20 @@ void init_achievement_hooks()
     {
         g_get_feat_trampoline = (GetFeatFun*)get_address("get_feat"sv);
         g_set_feat_trampoline = (SetFeatFun*)get_address("set_feat"sv);
+        g_is_shop_zone_trampoline = (IsShopZoneFun*)get_address("coord_inside_shop_zone"sv);
+        g_is_active_shop_room_trampoline = (IsShopZoneFun*)get_address("coord_inside_active_shop_room"sv);
+        g_get_roomowner_type_trampoline = (GetRoomownerTypeFun*)get_address("coord_roomowner_type"sv);
+        g_is_roomowner_alive_trampoline = (IsRoomownerAliveFun*)get_address("coord_roomowner_alive"sv);
 
         DetourTransactionBegin();
         DetourUpdateThread(GetCurrentThread());
 
         DetourAttach((void**)&g_get_feat_trampoline, &feat_unlocked);
         DetourAttach((void**)&g_set_feat_trampoline, &unlock_feat);
+        DetourAttach((void**)&g_is_shop_zone_trampoline, &is_shop_zone);
+        DetourAttach((void**)&g_is_active_shop_room_trampoline, &is_active_shop_room);
+        DetourAttach((void**)&g_get_roomowner_type_trampoline, &get_roomowner_type);
+        DetourAttach((void**)&g_is_roomowner_alive_trampoline, &is_roomowner_alive);
 
         const LONG error = DetourTransactionCommit();
         if (error != NO_ERROR)

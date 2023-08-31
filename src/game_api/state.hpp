@@ -319,6 +319,7 @@ struct State
     static size_t get_zoom_level_address();
     static float get_zoom_level();
     void zoom(float level);
+    void zoom(float level, float level_shop);
 
     static std::pair<float, float> click_position(float x, float y);
     static std::pair<float, float> screen_position(float x, float y);

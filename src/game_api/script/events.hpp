@@ -14,6 +14,8 @@ struct AABB;
 struct LevelGenRoomData;
 struct HudData;
 struct Hud;
+struct LevelGenSystem;
+struct StateMemory;
 
 void pre_load_level_files();
 void pre_level_generation();
@@ -24,6 +26,11 @@ void post_load_screen();
 void on_death_message(STRINGID stringid);
 std::optional<bool> pre_get_feat(FEAT feat);
 bool pre_set_feat(FEAT feat);
+
+std::optional<bool> pre_is_shop_zone(LevelGenSystem *level_gen, uint8_t layer, float x, float y);
+std::optional<bool> pre_is_active_shop_room(LevelGenSystem *level_gen, uint8_t layer, float x, float y);
+std::optional<uint32_t> pre_get_roomowner_type(uint8_t layer, float x, float y);
+std::optional<bool> pre_is_roomowner_alive(StateMemory *state, uint8_t layer, float x, float y);
 
 std::string pre_get_random_room(int x, int y, uint8_t layer, uint16_t room_template);
 std::optional<LevelGenRoomData> pre_handle_room_tiles(LevelGenRoomData room_data, int x, int y, uint16_t room_template);

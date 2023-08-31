@@ -428,7 +428,7 @@ function god_companions(g) end
 ---Set the zoom level used in levels and shops. 13.5 is the default.
 ---@param level number
 ---@return nil
-function zoom(level) end
+function zoom(level, shop_level) end
 ---Pause/unpause the game.
 ---This is just short for `state.pause == 32`, but that produces an audio bug
 ---I suggest `state.pause == 2`, but that won't run any callback, `state.pause == 16` will do the same but [set_global_interval](https://spelunky-fyi.github.io/overlunky/#set_global_interval) will still work

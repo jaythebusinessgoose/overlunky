@@ -1,6 +1,7 @@
 #pragma once
 
 using FEAT = uint8_t;
+struct LevelGenSystem;
 
 constexpr std::array g_AchievementNames = {
     "THE_FULL_SPELUNKY",
@@ -83,3 +84,4 @@ void set_feat_hidden(FEAT feat, bool hidden);
 void init_achievement_hooks();
 bool get_steam_achievement(const char* achievement_id, bool* achieved);
 bool set_steam_achievement(const char* achievement_id, bool achieved);
+bool is_shop_zone(LevelGenSystem *level_gen, uint8_t layer, float x, float y);

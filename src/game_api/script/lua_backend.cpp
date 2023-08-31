@@ -1442,6 +1442,110 @@ std::optional<bool> LuaBackend::pre_get_feat(FEAT feat)
     return std::nullopt;
 }
 
+std::optional<bool> LuaBackend::pre_is_shop_zone(LevelGenSystem *level_gen, uint8_t layer, float x, float y)
+{
+    if (!get_enabled())
+    return std::nullopt;
+
+    auto now = get_frame_count();
+    for (auto& [id, callback] : callbacks)
+    {
+        if (is_callback_cleared(id))
+            continue;
+        if (callback.screen == ON::PRE_IS_SHOP_ZONE) {
+            callback.lastRan = now;
+            set_current_callback(-1, id, CallbackType::Normal);
+            if (auto return_value = handle_function<bool>(this, callback.func, level_gen, layer, x, y))
+            {
+                if (return_value.has_value())
+                {
+                    return return_value.value();
+                }
+            }
+            clear_current_callback();
+        }
+    }
+    return std::nullopt;
+}
+
+std::optional<bool> LuaBackend::pre_is_active_shop_room(LevelGenSystem *level_gen, uint8_t layer, float x, float y)
+{
+    if (!get_enabled())
+    return std::nullopt;
+
+    auto now = get_frame_count();
+    for (auto& [id, callback] : callbacks)
+    {
+        if (is_callback_cleared(id))
+            continue;
+        if (callback.screen == ON::PRE_IS_ACTIVE_SHOP_ROOM) {
+            callback.lastRan = now;
+            set_current_callback(-1, id, CallbackType::Normal);
+            if (auto return_value = handle_function<bool>(this, callback.func, level_gen, layer, x, y))
+            {
+                if (return_value.has_value())
+                {
+                    return return_value.value();
+                }
+            }
+            clear_current_callback();
+        }
+    }
+    return std::nullopt;
+}
+
+std::optional<uint32_t> LuaBackend::pre_get_roomowner_type(uint8_t layer, float x, float y)
+{
+    if (!get_enabled())
+    return std::nullopt;
+
+    auto now = get_frame_count();
+    for (auto& [id, callback] : callbacks)
+    {
+        if (is_callback_cleared(id))
+            continue;
+        if (callback.screen == ON::PRE_GET_ROOMOWNER_TYPE) {
+            callback.lastRan = now;
+            set_current_callback(-1, id, CallbackType::Normal);
+            if (auto return_value = handle_function<uint32_t>(this, callback.func, layer, x, y))
+            {
+                if (return_value.has_value())
+                {
+                    return return_value.value();
+                }
+            }
+            clear_current_callback();
+        }
+    }
+    return std::nullopt;
+}
+
+std::optional<bool> LuaBackend::pre_is_roomowner_alive(StateMemory *state_memory, uint8_t layer, float x, float y)
+{
+    if (!get_enabled())
+    return std::nullopt;
+
+    auto now = get_frame_count();
+    for (auto& [id, callback] : callbacks)
+    {
+        if (is_callback_cleared(id))
+            continue;
+        if (callback.screen == ON::PRE_IS_ROOMOWNER_ALIVE) {
+            callback.lastRan = now;
+            set_current_callback(-1, id, CallbackType::Normal);
+            if (auto return_value = handle_function<bool>(this, callback.func, state_memory, layer, x, y))
+            {
+                if (return_value.has_value())
+                {
+                    return return_value.value();
+                }
+            }
+            clear_current_callback();
+        }
+    }
+    return std::nullopt;
+}
+
 bool LuaBackend::pre_set_feat(FEAT feat)
 {
     if (!get_enabled())

@@ -1139,6 +1139,23 @@ std::unordered_map<std::string_view, AddressRule> g_address_rules{
             .at_exe(),
     },
     {
+        "coord_roomowner_type"sv,
+        // Go into state.screen_level's handle_camera_zoom_level virtual, the function just before the switch
+        // statement gets the expected roomowner type for the camera player's location.
+        PatternCommandBuffer{}
+            .find_inst("\xB8\x29\x01\x00\x00\xBB\x33\x20\x00\x00"sv)
+            .at_exe()
+            .function_start(),
+    },
+    {
+        "coord_roomowner_alive"sv,
+        // See coord_roomowner_type, a little down it checks to see if there is a living roomowner in the room.
+        PatternCommandBuffer{}
+            .find_inst("\x48\x8B\x8F\x90\x13\x00\x00\x48\x39\xc8"sv)
+            .at_exe()
+            .function_start(),
+    },
+    {
         "enforce_camp_camera_bounds"sv,
         // Go into basecamp, put a write bp on state.camera.bounds.top
         PatternCommandBuffer{}

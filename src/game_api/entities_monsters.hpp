@@ -986,7 +986,7 @@ class Hermitcrab : public Monster
     bool is_inactive; // must be something else, since we already have is_active (or vice versa), gets triggered about half a second after is_active, maybe something like, can attack
     /// defaults to true, when toggled to false, a new carried item spawns
     bool spawn_new_carried_item;
-    uint8_t unknown; // sometimes i see 1 here, didn't get anything with breakpoint
+    bool going_up;
 };
 
 class Necromancer : public WalkingMonster

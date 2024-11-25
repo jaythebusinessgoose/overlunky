@@ -3618,6 +3618,7 @@ function Movable:generic_update_world(move, sprint_factor, disable_gravity, on_r
     ---@field is_active boolean @whether it is hidden behind the carried block or not, if true you can damage him
     ---@field is_inactive boolean
     ---@field spawn_new_carried_item boolean @defaults to true, when toggled to false, a new carried item spawns
+    ---@field going_up boolean
 
 ---@class Necromancer : WalkingMonster
     ---@field sound SoundMeta

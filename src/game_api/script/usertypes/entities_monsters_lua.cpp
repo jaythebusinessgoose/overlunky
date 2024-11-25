@@ -1182,6 +1182,8 @@ void register_usertypes(sol::state& lua)
         &Hermitcrab::is_inactive,
         "spawn_new_carried_item",
         &Hermitcrab::spawn_new_carried_item,
+        "going_up",
+        &Hermitcrab::going_up,
         sol::base_classes,
         sol::bases<Entity, Movable, PowerupCapable, Monster>());
 
